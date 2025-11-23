@@ -1,0 +1,24 @@
+{
+  "name": "token-trading-table",
+  "description": "Pixel-perfect token trading dashboard built with Next.js 14",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/token-trading-table"
+  },
+  "keywords": [
+    "nextjs",
+    "typescript",
+    "tailwindcss",
+    "redux",
+    "token-trading",
+    "dashboard",
+    "crypto"
+  ],
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit"
+  }
+}
