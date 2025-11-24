@@ -27,7 +27,7 @@ import {
 
 export default function HomePage() {
   const dispatch = useAppDispatch();
-  const { tokens, isLoading } = useAppSelector((state) => state.tokens);
+  const { tokens, isLoading, searchQuery } = useAppSelector((state) => state.tokens);
 
   const [newPairsSort, setNewPairsSort] = useState<{
     field: string;
@@ -122,19 +122,55 @@ export default function HomePage() {
   );
 
   const sortedNewPairs = useMemo(() => {
-    const filtered = tokens.filter((t: Token) => t.category === "new");
+    let filtered = tokens.filter((t: Token) => t.category === "new");
+    
+    // Apply search filter
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase().trim();
+      filtered = filtered.filter(
+        (token) =>
+          token.name.toLowerCase().includes(query) ||
+          token.symbol.toLowerCase().includes(query) ||
+          token.id.toLowerCase().includes(query)
+      );
+    }
+    
     return sortTokens(filtered, newPairsSort);
-  }, [tokens, newPairsSort, sortTokens]);
+  }, [tokens, newPairsSort, sortTokens, searchQuery]);
 
   const sortedFinalStretch = useMemo(() => {
-    const filtered = tokens.filter((t: Token) => t.category === "final");
+    let filtered = tokens.filter((t: Token) => t.category === "final");
+    
+    // Apply search filter
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase().trim();
+      filtered = filtered.filter(
+        (token) =>
+          token.name.toLowerCase().includes(query) ||
+          token.symbol.toLowerCase().includes(query) ||
+          token.id.toLowerCase().includes(query)
+      );
+    }
+    
     return sortTokens(filtered, finalStretchSort);
-  }, [tokens, finalStretchSort, sortTokens]);
+  }, [tokens, finalStretchSort, sortTokens, searchQuery]);
 
   const sortedMigrated = useMemo(() => {
-    const filtered = tokens.filter((t: Token) => t.category === "migrated");
+    let filtered = tokens.filter((t: Token) => t.category === "migrated");
+    
+    // Apply search filter
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase().trim();
+      filtered = filtered.filter(
+        (token) =>
+          token.name.toLowerCase().includes(query) ||
+          token.symbol.toLowerCase().includes(query) ||
+          token.id.toLowerCase().includes(query)
+      );
+    }
+    
     return sortTokens(filtered, migratedSort);
-  }, [tokens, migratedSort, sortTokens]);
+  }, [tokens, migratedSort, sortTokens, searchQuery]);
 
   return (
     <div className="h-screen bg-black flex flex-col overflow-hidden">

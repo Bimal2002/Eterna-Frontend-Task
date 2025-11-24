@@ -8,6 +8,7 @@ interface TokenState {
   selectedCategory: "all" | "new" | "final" | "migrated";
   sortField: SortField | null;
   sortDirection: SortDirection;
+  searchQuery: string; // Search query for filtering tokens
   isLoading: boolean;
   error: string | null;
 }
@@ -19,6 +20,7 @@ const initialState: TokenState = {
   selectedCategory: "all",
   sortField: null,
   sortDirection: "desc",
+  searchQuery: "",
   isLoading: false,
   error: null,
 };
@@ -70,6 +72,31 @@ const tokenSlice = createSlice({
     setError: (state, action: PayloadAction<string | null>) => {
       state.error = action.payload;
     },
+    // Set search query and filter tokens
+    setSearchQuery: (state, action: PayloadAction<string>) => {
+      state.searchQuery = action.payload;
+      const query = action.payload.toLowerCase().trim();
+      
+      // Filter tokens by search query and category
+      let filtered = state.tokens;
+      
+      // Apply search filter if query exists
+      if (query) {
+        filtered = filtered.filter(
+          (token) =>
+            token.name.toLowerCase().includes(query) ||
+            token.symbol.toLowerCase().includes(query) ||
+            token.id.toLowerCase().includes(query)
+        );
+      }
+      
+      // Apply category filter
+      if (state.selectedCategory !== "all") {
+        filtered = filtered.filter((t) => t.category === state.selectedCategory);
+      }
+      
+      state.filteredTokens = filtered;
+    },
   },
 });
 
@@ -80,6 +107,7 @@ export const {
   setSorting,
   setLoading,
   setError,
+  setSearchQuery,
 } = tokenSlice.actions;
 
 export default tokenSlice.reducer;

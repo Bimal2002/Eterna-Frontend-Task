@@ -1,10 +1,17 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { Search, Filter, SlidersHorizontal } from "lucide-react";
+import { useAppDispatch, useAppSelector } from "@/hooks/useStore";
+import { setSearchQuery } from "@/store/tokens";
 
 export default function Header() {
-  const [searchQuery, setSearchQuery] = useState("");
+  const dispatch = useAppDispatch();
+  const searchQuery = useAppSelector((state) => state.tokens.searchQuery);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setSearchQuery(e.target.value));
+  };
 
   return (
     <header className="sticky top-0 z-50 border-b border-zinc-800/50 bg-black/95 backdrop-blur-xl">
@@ -65,7 +72,7 @@ export default function Header() {
                 type="text"
                 placeholder="Search tokens by name, symbol, or address..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={handleSearchChange}
                 className="w-full bg-zinc-900/60 border border-zinc-800 rounded-lg pl-3 pr-28 py-2.5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all"
               />
               <div className="absolute inset-y-0 right-1 flex items-center gap-1">
